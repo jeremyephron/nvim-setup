@@ -4,6 +4,8 @@
 
 # TODO: add installation for macOS
 
+set -e
+
 REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 RESOURCE_DIR="$REPO_DIR/resources"
 
