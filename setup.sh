@@ -52,7 +52,7 @@ install_rust_analyzer() {
 
 copy_config_files() {
   mkdir -p "$HOME/.config/nvim"
-  cp -R "$RESOURCE_DIR/nvim/" "$HOME/.config/nvim"
+  cp -R "$RESOURCE_DIR/nvim" "$HOME/.config/"
 }
 
 # Update lists of packages
