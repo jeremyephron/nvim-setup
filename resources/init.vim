@@ -121,21 +121,17 @@ lua << EOF
       end,
     },
     mapping = {
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
+      ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
     },
     sources = {
       { name = 'nvim_lsp' },
       { name = 'buffer' },
     }
   })
-
-  -- Setup lspconfig
-  local lspconfig = require'lspconfig'
-
-  lspconfig.pylsp.setup{
-    capabilities = require'cmp_nvim_lsp'.update_capabilities(
-      vim.lsp.protocol.make_client_capabilities()
-    )
-  }
 
   -- Setup treesitter
   require'nvim-treesitter.configs'.setup{
@@ -155,71 +151,60 @@ lua << EOF
     },
   }
 
+  -- Setup lspconfig
+  local lspconfig = require'lspconfig'
+
   -- ccls for C/C++
-  lspconfig.ccls.setup{}
+  lspconfig.ccls.setup{
+    capabilities = require'cmp_nvim_lsp'.update_capabilities(
+      vim.lsp.protocol.make_client_capabilities()
+    )
+  }
 
   -- bashls for Bash scripts
-  -- Requires install of bashls:
-  --   (09-06-2021) sudo npm i -g bash-language-server
+  -- Requires install of bashls
   lspconfig.bashls.setup{
     cmd_env = {
       GLOB_PATTERN = "**/*@(.sh|.inc|.bash|.command)"
-    }
+    },
+    capabilities = require'cmp_nvim_lsp'.update_capabilities(
+      vim.lsp.protocol.make_client_capabilities()
+    )
   }
 
   -- pylsp for Python
-  lspconfig.pylsp.setup{}
+  lspconfig.pylsp.setup{
+    capabilities = require'cmp_nvim_lsp'.update_capabilities(
+      vim.lsp.protocol.make_client_capabilities()
+    )
+  }
 
   -- rust-analyzer for Rust
-  lspconfig.rust_analyzer.setup{}
+  lspconfig.rust_analyzer.setup{
+    capabilities = require'cmp_nvim_lsp'.update_capabilities(
+      vim.lsp.protocol.make_client_capabilities()
+    )
+  }
 
   -- vscode-html-language-server for HTML
-  lspconfig.html.setup{}
+  lspconfig.html.setup{
+    capabilities = require'cmp_nvim_lsp'.update_capabilities(
+      vim.lsp.protocol.make_client_capabilities()
+    )
+  }
 
   -- java-language-server for Java
-  lspconfig.java_language_server.setup{}
+  lspconfig.java_language_server.setup{
+    capabilities = require'cmp_nvim_lsp'.update_capabilities(
+      vim.lsp.protocol.make_client_capabilities()
+    )
+  }
 
   vim.o.completeopt = "menu,menuone,noselect"
 
   local t = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
   end
-
-  local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-      return true
-    else
-      return false
-    end
-  end
-
-  -- Use (s-)tab to:
-  --   move to prev/next item in completion menuone
-  --   jump to prev/next snippet's placeholder
-  _G.tab_complete = function()
-    if vim.fn.pumvisible() == 1 then
-      return t "<C-n>"
-    elseif check_back_space() then
-      return t "<Tab>"
-    else
-      return vim.fn['cmp#complete']()
-    end
-  end
-
-  _G.s_tab_complete = function()
-    if vim.fn.pumvisible() == 1 then
-      return t "<C-p>"
-    else
-      -- If <S-Tab> is not working in your terminal, change it to <C-h>
-      return t "<S-Tab>"
-    end
-  end
-
-  vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-  vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-  vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-  vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
   local nnn_actions = {};
   nnn_actions['<C-T>'] = 'tab drop';
@@ -284,4 +269,4 @@ nnoremap <Leader>t :NERDTreeToggle<CR>
 nnoremap <Leader>b :TagbarToggle<CR>
 
 " Set syntax highlighting for personal extensions
-autocmd BufNewFile,BufRead *.howto set filetype=text
+" autocmd BufNewFile,BufRead *.howto set filetype=text
