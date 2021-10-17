@@ -23,7 +23,7 @@ install_neovim() {
     install_neovim_linux
   elif [[ "$OSTYPE" == "darwin"* ]]; then
     install_neovim_darwin
-  else; then
+  else
     exit 1
   fi
 }
@@ -43,7 +43,7 @@ install_rust_analyzer() {
     install_rust_analyzer_linux
   elif [[ "$OSTYPE" == "darwin"* ]]; then
     install_rust_analyzer_darwin
-  else; then
+  else
     exit 1
   fi
 }
