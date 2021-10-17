@@ -4,6 +4,9 @@
 
 # TODO: add installation for macOS
 
+REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+RESOURCE_DIR="$REPO_DIR/resources"
+
 # Neovim
 install_neovim_linux() {
   sudo add-apt-repository -y ppa:neovim-ppa/unstable
@@ -43,6 +46,11 @@ install_rust_analyzer() {
   else; then
     exit 1
   fi
+}
+
+copy_config_files() {
+  mkdir -p "$HOME/.config/nvim"
+  cp -r "$RESOURCE_DIR/nvim/" "$HOME/.config/nvim"
 }
 
 # Update lists of packages
@@ -94,3 +102,5 @@ install_neovim
 yarn global add neovim
 pip3 install neovim
 sudo gem install neovim
+
+copy_config_files
